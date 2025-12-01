@@ -61,8 +61,8 @@ dependencies {
     //Jetpack compose navigation (NavController, NavHost, composable() to move between screens )
     implementation(libs.androidx.navigation.compose)
     //Room database
-    implementation("androidx.room:room-runtime:2.8.4")
-    implementation("androidx.room:room-ktx:2.8.4")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     // Annotation Processor (for generating code)
-    kapt("androidx.room:room-compiler:2.8.4")
+    kapt(libs.androidx.room.compiler)
 }
