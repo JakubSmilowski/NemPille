@@ -37,7 +37,7 @@ fun AppNavHost(
         composable(route = Screen.MedicationList.route) {
             MedicationListScreen(navController = navController)
         }
-        composable (route = Screen.MedicationList.route) {
+        composable (route = Screen.Caregiver.route) {
             CaregiverScreen(navController = navController)
         }
         composable(route = Screen.Settings.route) {

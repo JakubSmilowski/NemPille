@@ -16,8 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.nempille.ui.navigation.AppNavHost
 import com.example.nempille.ui.theme.NemPilleTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 //main entry point
+@AndroidEntryPoint //tells 'u can inject dependencies in this Activity'
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
