@@ -1,9 +1,12 @@
 package com.example.nempille.di
 
 import android.content.Context
+import androidx.room.PrimaryKey
 import androidx.room.Room
+import com.example.nempille.data.local.dao.CaregiverDao
 import com.example.nempille.data.local.database.AppDatabase
 import com.example.nempille.data.local.dao.MedicationDao
+import com.example.nempille.data.local.dao.PatientDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,17 +25,23 @@ object DatabaseModule{
         @ApplicationContext context: Context
     ): AppDatabase {
         return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "nempille_db" //name of the sqlite file
-        ).build()
+                context,
+                AppDatabase::class.java,
+                "nempille_db" //name of the sqlite file
+
+            //will DROP and RECREATE the db when version changes
+            //old data is lost
+            ).fallbackToDestructiveMigration(true)
+            .build()
     }
 
     //Provide DAO. Hilt knows how to get AppDatabase from the fun above
     @Provides
-    fun provideMedicationDao(
-        database: AppDatabase
-    ): MedicationDao {
-        return database.medicationDao()
-    }
+    fun provideMedicationDao(database: AppDatabase): MedicationDao = database.medicationDao()
+
+    @Provides
+    fun providePatientDao(database: AppDatabase): PatientDao = database.patientDao()
+
+    @Provides
+    fun provideCaregiverDao(database: AppDatabase): CaregiverDao = database.caregiverDao()
 }
