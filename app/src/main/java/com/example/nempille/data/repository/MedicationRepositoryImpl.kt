@@ -1,13 +1,16 @@
 package com.example.nempille.data.repository
 
 import com.example.nempille.data.local.dao.MedicationDao
+import com.example.nempille.data.mapper.toDomain
+import com.example.nempille.data.mapper.toEntity
 import com.example.nempille.domain.model.Medication
 import com.example.nempille.domain.repository.MedicationRepository
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 // Concrete implementation of MedicationRepository that uses Room via MedicationDao
-class MedicationRepositoryImpl(
+class MedicationRepositoryImpl @Inject constructor(
     private val medicationDao: MedicationDao   // DAO injected via constructor
 ) : MedicationRepository {
 

@@ -1,4 +1,4 @@
-package com.example.nempille.data.repository
+package com.example.nempille.data.mapper
 
 import com.example.nempille.data.local.entity.MedicationEntity
 import com.example.nempille.domain.model.Medication

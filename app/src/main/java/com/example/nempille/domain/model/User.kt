@@ -4,7 +4,7 @@ package com.example.nempille.domain.model
 //pure kotlin for now
 
 data class User(
-    val id: Long, //unique ID inside database
+    val id: Int, //unique ID inside database
     val name: String, //full name or nickname
     val email: String, //logged email
     val role: UserRole, //PATIENT or CAREGIVER (from the enum)

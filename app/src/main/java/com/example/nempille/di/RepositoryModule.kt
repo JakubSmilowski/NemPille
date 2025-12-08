@@ -2,7 +2,10 @@ package com.example.nempille.di
 
 import com.example.nempille.data.local.dao.MedicationDao
 import com.example.nempille.data.repository.MedicationRepositoryImpl
+import com.example.nempille.data.repository.UserRepositoryImpl
 import com.example.nempille.domain.repository.MedicationRepository
+import com.example.nempille.domain.repository.UserRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,14 +15,19 @@ import javax.inject.Singleton
 //module that binds interfaces (domain) to implement (data)
 @Module
 @InstallIn(SingletonComponent::class)
-object RepositoryModule {
-    //provide singleton MedicationRepository
-    @Provides
+abstract class RepositoryModule {
+
+    //BIND MedicationRepository interface → MedicationRepositoryImpl implementation
+    @Binds
     @Singleton
-    fun provideMedicationRepository(
-        dao: MedicationDao
-    ): MedicationRepository {
-        //hilt already knows how to get MedicationDao (from DatabaseModule)
-        return MedicationRepositoryImpl(dao)
-    }
+    abstract fun bindMedicationRepository(
+        impl: MedicationRepositoryImpl
+    ): MedicationRepository
+
+    // BIND UserRepository interface → UserRepositoryImpl implementation
+    @Binds
+    @Singleton
+    abstract fun bindUserRepository(
+        impl: UserRepositoryImpl
+    ): UserRepository
 }

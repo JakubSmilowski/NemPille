@@ -3,10 +3,10 @@ package com.example.nempille.di
 import android.content.Context
 import androidx.room.PrimaryKey
 import androidx.room.Room
-import com.example.nempille.data.local.dao.CaregiverDao
 import com.example.nempille.data.local.database.AppDatabase
 import com.example.nempille.data.local.dao.MedicationDao
-import com.example.nempille.data.local.dao.PatientDao
+import com.example.nempille.data.local.dao.PatientCaregiverDao
+import com.example.nempille.data.local.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,8 +40,8 @@ object DatabaseModule{
     fun provideMedicationDao(database: AppDatabase): MedicationDao = database.medicationDao()
 
     @Provides
-    fun providePatientDao(database: AppDatabase): PatientDao = database.patientDao()
+    fun provideUserDao(database: AppDatabase): UserDao = database.userDao()
 
     @Provides
-    fun provideCaregiverDao(database: AppDatabase): CaregiverDao = database.caregiverDao()
+    fun providePatientCaregiverDao(database: AppDatabase): PatientCaregiverDao = database.patientCaregiverDao()
 }
