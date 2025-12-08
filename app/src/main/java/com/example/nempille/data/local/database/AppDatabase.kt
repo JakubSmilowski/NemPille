@@ -16,7 +16,7 @@ import com.example.nempille.data.local.entity.PatientCaregiverRelation
         MedicationEntity::class,
         UserEntity::class,
         PatientCaregiverRelation::class],
-    version = 3, //change each time
+    version = 4, //change each time
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

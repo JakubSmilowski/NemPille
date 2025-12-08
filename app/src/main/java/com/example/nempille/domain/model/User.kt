@@ -11,6 +11,8 @@ data class User(
 
     //optional, nullable - can be missing
     val phone: String? = null,
+    //optional age, useful for patients, can be null for caregivers
+    val age: Int? = null
 
     //no raw passwords
 )

@@ -35,6 +35,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
     buildFeatures {
         compose = true
@@ -77,4 +78,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     //Hilt + compose integration to use hiltViewModel()
     implementation(libs.androidx.hilt.navigation.compose)
+    //jetpack library, used to store small amounts of data on device persistently
+    //for isLoggedIn  = true , userRole = "patient"
+    implementation (libs.androidx.datastore.preferences)
 }
