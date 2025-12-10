@@ -20,6 +20,8 @@ sealed class Screen (val route: String){
     //Medications for the current user
     data object MedicationList : Screen("medication_list")
     //Caregiver view (list of patients, for instance)
+    //Screen to add medication
+    data object AddMedication : Screen("add_medication")
     data object Caregiver : Screen("caregiver")
     //App settings
     data object Settings : Screen ("settings")

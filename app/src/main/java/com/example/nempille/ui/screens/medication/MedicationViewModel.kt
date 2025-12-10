@@ -20,16 +20,16 @@ class MedicationViewModel @Inject constructor(
 
     //observe the current user from AuthenticationRepository
     //if he logs out - null
-    //if logs in - correct userId
-    private val currentUserFlow = authRepository
-        .getCurrentUser()              // Flow<User?>
-        .filterNotNull()               // Ignore null values
-        .map { it.id }                 // Convert User → userId (Int)
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(5000),
-            null                        // initial state: no user yet
-        )
+    //if logs in - user.id (Int)
+    private val currentUserFlow: StateFlow<Int?> =
+        authRepository
+            .getCurrentUser()              // Flow<User?>
+            .map { user -> user?.id }      //Flow<Int?>, ? for ignoring null values
+            .stateIn(
+                scope = viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                null                        // initial state: no user yet
+            )
 
     //medications updates when db changes, logged user changes
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -41,12 +41,37 @@ class MedicationViewModel @Inject constructor(
                 medicationRepository.getMedicationsForUser(userId)
             }
             .stateIn(
-                viewModelScope,
+                scope = viewModelScope,
                 SharingStarted.WhileSubscribed(5000),
                 emptyList()
             )
 
-    //a test medication for currently logged in
+    //CREATE MEDICATION FOR CURRENT LOGGED IN USER
+    fun addMedication(
+        name: String,
+        dosage: String,
+        frequencyPerDay: Int,
+        notes: String?
+    ) {
+        viewModelScope.launch{
+            val userId = currentUserFlow.value
+            //if no one is logged in, cannot create medication
+            if (userId == null) {
+                return@launch
+            }
+
+            val medication = Medication(
+                id = 0,            //0-let room autogenerate
+                userId = userId,   //link medication to current user
+                name = name,
+                dosage = dosage,
+                frequencyPerDay = frequencyPerDay,
+                notes = notes
+            )
+            medicationRepository.addMedication(medication)
+        }
+    }
+    //a test helper to insert hardcoded medication
     fun addSampleMedication() {
         viewModelScope.launch {
             val userId = currentUserFlow.value ?: return@launch  // No user logged in

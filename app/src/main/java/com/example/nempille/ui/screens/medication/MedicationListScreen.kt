@@ -50,7 +50,14 @@ fun MedicationListScreen (
             Text(text = "Add sample medication")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Button(
+            onClick = { navController.navigate(com.example.nempille.ui.navigation.Screen.AddMedication.route) },
+            modifier = Modifier.align(Alignment.End)
+        ) {
+            Text("Add medication")
+        }
 
         // Show a message when the list is empty.
         if (medicationList.isEmpty()) {

@@ -13,6 +13,7 @@ import com.example.nempille.ui.screens.notifications.NotificationsScreen
 import com.example.nempille.ui.screens.settings.SettingsScreen
 import com.example.nempille.ui.screens.signup.SignupScreen
 import com.example.nempille.ui.splash.SplashScreen
+import com.example.nempille.ui.screens.medication.AddMedicationScreen
 
 //composable HOSTS - entire navigation graph
 //tells Navigation which composable belongs to which route
@@ -49,6 +50,11 @@ fun AppNavHost(
         //MEDICATION LIST
         composable(route = Screen.MedicationList.route) {
             MedicationListScreen(navController = navController)
+        }
+
+        //ADD MEDICATION
+        composable(route = Screen.AddMedication.route) {
+            AddMedicationScreen(navController = navController)
         }
 
         //CAREGIVER
