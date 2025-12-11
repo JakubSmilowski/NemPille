@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface MedicationDao{
     //returns ALL medications for one user-patient
     //flow lets UI automatically update when data changes
-    @Query("SELECT * FROM medications WHERE userId = :userId")
+    @Query("SELECT * FROM medications WHERE userId = :userId ORDER BY id ASC")
     fun getMedicationsForUser(userId: Int): Flow<List<MedicationEntity>>
 
     //insert new medication

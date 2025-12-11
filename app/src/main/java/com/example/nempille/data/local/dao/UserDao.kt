@@ -29,9 +29,14 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE role = :role")
     fun getUsersByRole(role: String): Flow<List<UserEntity>>
 
-    //get single user by id
+    //get single user by id (one-shot)
     @Query("SELECT * FROM users WHERE id = :id")
     suspend fun getUserById(id: Int): UserEntity?
+
+    //observe single user by id as Flow
+    // This is used together with DataStore to build "current user"
+    @Query("SELECT * FROM users WHERE id = :id")
+    fun observeUserById(id: Int): Flow<UserEntity?>
 
     //get user by email (for login & signup check)
     @Query("SELECT * FROM users WHERE email = :email LIMIT 1")

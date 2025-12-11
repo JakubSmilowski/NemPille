@@ -19,4 +19,8 @@ interface UserRepository {
 
     // Delete a user
     suspend fun deleteUser(user: User)
+
+    //Observe the currently logged-in user (null in no one is logged in)
+    //not null - user loaded from Room using id stored in DataStore
+    fun getCurrentUser(): Flow<User?>
 }

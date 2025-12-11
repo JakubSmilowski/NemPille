@@ -28,6 +28,14 @@ sealed class Screen (val route: String){
         fun createRoute(medicationId: Int): String =
             "edit_medication/$medicationId"
     }
+
+    // Screen to show a given patient's meds
+    data object PatientMedications : Screen("patient_medications/{patientId}") {
+
+        // Helper to build actual path from a patient id
+        fun createRoute(patientId: Int): String = "patient_medications/$patientId"
+    }
+
     //caregiver screen
     data object Caregiver : Screen("caregiver")
     //App settings
