@@ -14,6 +14,9 @@ interface UserRepository {
     // Get a single user
     suspend fun getUserById(id: Int): User?
 
+    // Get a single user by email
+    suspend fun getUserByEmail(email: String): User?
+
     // Create or update a user
     suspend fun updateUser(user: User)
 

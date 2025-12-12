@@ -41,7 +41,7 @@ class SplashViewModel @Inject constructor(
                 Screen.Home.route
             } else {
                 //No user -> to Login screen
-                Screen.Login.route
+                Screen.WelcomeScreen.route
             }
         }
     }

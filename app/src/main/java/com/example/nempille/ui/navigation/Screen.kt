@@ -11,10 +11,28 @@ package com.example.nempille.ui.navigation
 sealed class Screen (val route: String){
     //splash - first screen that decides where to go (login or home)
     data object Splash : Screen("splash")
+    //Welcome page - It is showed when user open app for the first time
+    data object WelcomeScreen : Screen("welcome")
+
     //Login screen (after splash if not logged in)
     data object Login : Screen("login")
     //Sign up - registration
     data object Signup : Screen("signup")
+
+    // Renaming Signup to be more specific for the new flow
+    data object SetupProfile : Screen("setup_profile")
+    data object SetupAgeAndPillCount : Screen("setup_age_pill_count")
+    data object SetupMedicationNames : Screen("setup_medication_names")
+
+    // This route will take the index of the medication we are setting up
+    data object SetupMedicationSchedule : Screen("setup_medication_schedule/{medIndex}") {
+        fun createRoute(medIndex: Int) = "setup_medication_schedule/$medIndex"
+    }
+
+    data object SetupNotifications : Screen("setup_notifications")
+    data object SetupSummary : Screen("setup_summary")
+
+
     //Home screen (after login)
     data object Home : Screen("home")
     //Medications for the current user

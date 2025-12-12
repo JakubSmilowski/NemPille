@@ -33,6 +33,10 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserById(id: Int): User? =
         userDao.getUserById(id)?.toDomain()
 
+    override suspend fun getUserByEmail(email: String): User? {
+        return userDao.getUserByEmail(email)?.toDomain()
+    }
+
     override suspend fun updateUser(user: User) {
         userDao.updateUser(user.toEntity())
         // We don't need to touch DataStore here, it only stores user_id / role
