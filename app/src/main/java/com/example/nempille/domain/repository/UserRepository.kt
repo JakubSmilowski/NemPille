@@ -23,4 +23,8 @@ interface UserRepository {
     //Observe the currently logged-in user (null in no one is logged in)
     //not null - user loaded from Room using id stored in DataStore
     fun getCurrentUser(): Flow<User?>
+
+    //create new patient user in the system
+    //patient is just a user with role = PATIENT
+    suspend fun createPatient(name: String): Int
 }

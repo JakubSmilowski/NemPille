@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -43,6 +44,15 @@ fun CaregiverScreen(
 
         Spacer(Modifier.height(8.dp))
 
+        Button(
+            onClick = { navController.navigate(Screen.AddPatient.route) },
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+        ) {
+            Text("Add New Patient")
+        }
+
         // List of patients
         LazyColumn {
             items(patients) { patient ->
@@ -63,9 +73,6 @@ fun CaregiverScreen(
                             text = patient.name,
                             style = MaterialTheme.typography.titleMedium
                         )
-
-                        // If later you add relationToPatient to your UI model,
-                        // you can show it here.
                     }
                 }
             }

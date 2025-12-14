@@ -2,6 +2,7 @@ package com.example.nempille.data.repository
 
 import com.example.nempille.data.local.dao.UserDao
 import com.example.nempille.data.local.datastore.AuthDataStore
+import com.example.nempille.data.local.entity.UserEntity
 import com.example.nempille.data.mapper.toDomain
 import com.example.nempille.data.mapper.toEntity
 import com.example.nempille.domain.model.User
@@ -62,4 +63,23 @@ class UserRepositoryImpl @Inject constructor(
                         }
                 }
             }
+
+    override suspend fun createPatient(name: String): Int {
+        //Create a UserEntity representing a PATIENT
+        // For now we only care about name and role
+        // Email/password can be empty if this patient doesn't log in
+        val entity = UserEntity(
+            id = 0, // 0 tells Room: "please auto-generate an ID"
+            name = name,
+            email = "$name@example.com",    // placeholder (must not be null)
+            role = UserRole.PATIENT.name,
+            age = null,
+            phoneNumber = null
+        )
+
+        // Insert into DB, get new row id
+        val newId = userDao.insertUser(entity)
+        //convert to Int bc app uses Int
+        return newId.toInt()
+    }
 }

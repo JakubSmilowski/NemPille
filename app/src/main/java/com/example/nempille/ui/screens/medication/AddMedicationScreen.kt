@@ -16,10 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 
-// Screen that lets the current logged-in user create a new medication.
-// For now, we use local Compose state for the form fields and then call
-// MedicationViewModel.addMedication().
-
+// Screen that lets the current logged-in user create a new medication
+// and choose a daily reminder time like "17:18".
 @Composable
 fun AddMedicationScreen(
     navController: NavController,
@@ -31,6 +29,9 @@ fun AddMedicationScreen(
     var dosage by remember { mutableStateOf("") }
     var frequencyText by remember { mutableStateOf("") }
     var notes by remember { mutableStateOf("") }
+
+    // NEW: reminder time in simple "HH:MM" format
+    var reminderTimeText by remember { mutableStateOf("") }
 
     // Simple local error text for validation
     var errorText by remember { mutableStateOf<String?>(null) }
@@ -93,6 +94,18 @@ fun AddMedicationScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
+            // Reminder time field (simple text "HH:MM")
+            OutlinedTextField(
+                value = reminderTimeText,
+                onValueChange = {
+                    reminderTimeText = it
+                    errorText = null
+                },
+                label = { Text("Reminder time (HH:MM, e.g. 09:30)") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+
             // Notes (optional)
             OutlinedTextField(
                 value = notes,
@@ -127,6 +140,14 @@ fun AddMedicationScreen(
                         return@Button
                     }
 
+                    // Parse reminderTimeText as "HH:MM"
+                    val parsedTime = parseTime(reminderTimeText)
+                    if (parsedTime == null) {
+                        errorText = "Reminder time must be in format HH:MM (e.g. 09:30)"
+                        return@Button
+                    }
+                    val (hour, minute) = parsedTime
+
                     isSaving = true
 
                     // Ask ViewModel to save the medication for current user
@@ -134,11 +155,12 @@ fun AddMedicationScreen(
                         name = name.trim(),
                         dosage = dosage.trim(),
                         frequencyPerDay = freq,
-                        notes = notes.ifBlank { null }
+                        notes = notes.ifBlank { null },
+                        reminderHour = hour,
+                        reminderMinute = minute
                     )
 
                     // For now we optimistically navigate back.
-                    // Later you could listen for success state.
                     navController.popBackStack()
                 },
                 enabled = !isSaving,
@@ -153,7 +175,7 @@ fun AddMedicationScreen(
                     )
                     Text("Saving…")
                 } else {
-                    Text("Save")
+                    Text("Save")          // <--- text is back here
                 }
             }
 
@@ -165,4 +187,20 @@ fun AddMedicationScreen(
             }
         }
     }
+}
+
+/**
+ * Helper to parse a "HH:MM" string into (hour, minute).
+ * Returns null if format is invalid.
+ */
+private fun parseTime(timeText: String): Pair<Int, Int>? {
+    val parts = timeText.trim().split(":")
+    if (parts.size != 2) return null
+
+    val hour = parts[0].toIntOrNull() ?: return null
+    val minute = parts[1].toIntOrNull() ?: return null
+
+    if (hour !in 0..23 || minute !in 0..59) return null
+
+    return hour to minute
 }

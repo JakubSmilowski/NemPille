@@ -19,5 +19,8 @@ class PatientMedicationListViewModel @Inject constructor(
 
     val medications: StateFlow<List<Medication>> =
         medicationRepository.getMedicationsForUser(patientId)
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList())
 }
