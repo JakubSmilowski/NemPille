@@ -16,8 +16,10 @@ sealed class Screen (val route: String){
 
     //Login screen (after splash if not logged in)
     data object Login : Screen("login")
+
     //Sign up - registration
     data object Signup : Screen("signup")
+
 
     // Renaming Signup to be more specific for the new flow
     data object SetupProfile : Screen("setup_profile")
@@ -32,13 +34,15 @@ sealed class Screen (val route: String){
     data object SetupNotifications : Screen("setup_notifications")
     data object SetupSummary : Screen("setup_summary")
 
-
     //Home screen (after login)
     data object Home : Screen("home")
+
     //Medications for the current user
     data object MedicationList : Screen("medication_list")
+
     //Screen to add medication
     data object AddMedication : Screen("add_medication")
+
     // EDIT MEDICATION with navigation argument
     data object EditMedication : Screen("edit_medication/{medicationId}") {
 
@@ -56,8 +60,13 @@ sealed class Screen (val route: String){
 
     //caregiver screen
     data object Caregiver : Screen("caregiver")
+
+    // Screen where caregiver can create a new patient and link to themselves
+    data object AddPatient : Screen("add_patient")
+
     //App settings
     data object Settings : Screen ("settings")
+
     //Notifications
     data object Notifications : Screen("notifications")
 }

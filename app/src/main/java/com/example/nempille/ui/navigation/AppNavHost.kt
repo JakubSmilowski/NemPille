@@ -18,6 +18,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.nempille.ui.screens.medication.EditMedicationScreen
 import com.example.nempille.ui.screens.patient.PatientMedicationListScreen
+import com.example.nempille.ui.screens.patient.AddPatientScreen
 
 import com.example.nempille.ui.screens.setup.SetupProfileScreen
 import com.example.nempille.ui.screens.setup.SetupAgeAndPillCountScreen
@@ -119,6 +120,11 @@ fun AppNavHost(
             CaregiverScreen(navController = navController)
         }
 
+        // ADD PATIENT (caregiver creates new patient)
+        composable(route = Screen.AddPatient.route) {
+            AddPatientScreen(navController = navController)
+        }
+
         //PATIENT MEDICATION (takes patientId as argument)
         composable(
             route = Screen.PatientMedications.route,
@@ -126,6 +132,7 @@ fun AppNavHost(
                 navArgument("patientId") { type = NavType.IntType }
             )
         ) { backStackEntry ->
+            // Read the patientId from navigation arguments
             val patientId = backStackEntry.arguments?.getInt("patientId") ?: 0
 
             PatientMedicationListScreen(

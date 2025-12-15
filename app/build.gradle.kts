@@ -83,4 +83,5 @@ dependencies {
     //jetpack library, used to store small amounts of data on device persistently
     //for isLoggedIn  = true , userRole = "patient"
     implementation (libs.androidx.datastore.preferences)
+    implementation(libs.androidx.compose.material.iconsExtended)
 }

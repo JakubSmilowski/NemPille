@@ -1,6 +1,7 @@
 package com.example.nempille.data.repository
 
 import com.example.nempille.data.local.dao.PatientCaregiverDao
+import com.example.nempille.data.local.entity.PatientCaregiverRelation
 import com.example.nempille.data.mapper.toDomain
 import com.example.nempille.domain.model.User
 import com.example.nempille.domain.repository.PatientCaregiverRepository
@@ -27,5 +28,19 @@ class PatientCaregiverRepositoryImpl @Inject constructor(
     override fun getCaregiversForPatient(patientId: Int): Flow<List<User>> {
         return dao.getCaregiversForPatientWithUsers(patientId)
             .map { list -> list.map { it.toDomain() } }
+    }
+
+    override suspend fun addRelation(
+        patientId: Int,
+        caregiverId: Int,
+        relationToPatient: String
+    ) {
+        //create entity for join table and insert int
+        val relation = PatientCaregiverRelation(
+            patientId = patientId,
+            caregiverId = caregiverId,
+            relationToPatient = relationToPatient
+        )
+        dao.insertRelation(relation)
     }
 }
