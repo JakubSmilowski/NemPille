@@ -15,10 +15,6 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import javax.inject.Inject
 
-
-// --- DATA MODELS FOR THE SETUP FLOW ---
-
-// Represents a single time the user takes a pill (e.g., 8:00 AM, 2 pills)
 data class PillSchedule(
     val time: LocalTime,
     val quantity: Int = 1
@@ -32,14 +28,12 @@ data class MedicationSetupState(
     val schedules: List<PillSchedule> = emptyList(),
     val additionalInfo: String = ""
 )
-
-// This is the single source of truth for the entire setup flow
 data class SetupState(
     // User profile
     val role: UserRole? = null,
     val name: String = "",
     val email: String = "",
-    val age: String = "", // Use String for TextField compatibility
+    val age: String = "",
 
     // Medication setup
     val pillCount: String = "",
@@ -58,13 +52,12 @@ data class SetupState(
 class SetupViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val loginUseCase: LoginUseCase,
-    private val medicationRepository: MedicationRepository // Inject this to save meds
+    private val medicationRepository: MedicationRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SetupState())
     val uiState = _uiState.asStateFlow()
 
-    // --- FUNCTIONS TO UPDATE THE STATE ---
 
     fun onRoleSelected(role: UserRole) {
         _uiState.update { it.copy(role = role) }
@@ -134,18 +127,7 @@ class SetupViewModel @Inject constructor(
         _uiState.update { it.copy(wantsToNotifyCaregiver = wantsToNotify, caregiverMobile = number) }
     }
 
-
-
-    // You will continue to add more functions here for each step:
-    // - onMedicationNameChanged(index: Int, name: String)
-    // - onFrequencyChanged(medIndex: Int, isDaily: Boolean, days: Set<DayOfWeek>)
-    // - onScheduleTimeAdded(medIndex: Int, time: LocalTime, quantity: Int)
-    // - onCaregiverInfoChanged(wantsToNotify: Boolean, number: String)
-
-    /**
-     * Finalizes the setup, saves everything to the database,
-     * logs the user in, and triggers navigation to HomeScreen.
-     */
+    //This saves everyhthing to the database hopefully
     fun completeSetup() {
         viewModelScope.launch {
             val state = _uiState.value
@@ -153,17 +135,17 @@ class SetupViewModel @Inject constructor(
 
             // 1. Create and save the user
             val newUser = User(
-                id = 0, // id is 0 for a new user, DB will autogenerate
+                id = 0,
                 name = state.name,
                 email = state.email,
-                role = UserRole.PATIENT, // This flow is for patients
+                role = UserRole.PATIENT,
                 age = state.age.toIntOrNull(),
                 phone = if (state.wantsToNotifyCaregiver) state.caregiverMobile else null)
             userRepository.updateUser(newUser)
 
             // 2. Get the new user's ID to associate medications
             val savedUser = userRepository.getUserByEmail(state.email)
-            val userId = savedUser?.id ?: return@launch // Exit if user wasn't saved correctly
+            val userId = savedUser?.id ?: return@launch
 
             // 3. Save all the configured medications
             state.medications.forEach { medSetup ->
@@ -171,7 +153,6 @@ class SetupViewModel @Inject constructor(
                     userId = userId,
                     name = medSetup.name,
                     // TODO: Map your detailed schedule to the simpler Medication model
-                    // This might require expanding your Medication model/entity
                     dosage = "See schedule",
                     frequencyPerDay = medSetup.schedules.size,
                     notes = medSetup.additionalInfo

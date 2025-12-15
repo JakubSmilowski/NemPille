@@ -54,7 +54,7 @@ fun SetupAgeAndPillCountScreen(
         Button(
             onClick = {
                 viewModel.onAgeAndPillCountChanged(age, pillCount)
-                viewModel.prepareMedicationList() // IMPORTANT: This sets up the next step
+                viewModel.prepareMedicationList()
                 navController.navigate(Screen.SetupMedicationNames.route)
             },
             modifier = Modifier.fillMaxWidth(),

@@ -16,9 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-// --- ADDED MISSING IMPORT ---
 import androidx.compose.foundation.text.KeyboardOptions
-
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,7 +53,6 @@ fun SetupMedicationScheduleScreen(
                 val newSchedule = PillSchedule(
                     time = java.time.LocalTime.of(timePickerState.hour, timePickerState.minute)
                 )
-                // Add the new time and sort the list
                 schedules = (schedules + newSchedule).sortedBy { it.time }
                 showTimePicker = false
             },
@@ -80,7 +77,7 @@ fun SetupMedicationScheduleScreen(
         Spacer(Modifier.height(16.dp))
 
         LazyColumn(modifier = Modifier.weight(1f)) {
-            // --- Frequency ---
+
             item {
                 Text("How often do you take it?", style = MaterialTheme.typography.titleLarge)
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -103,7 +100,7 @@ fun SetupMedicationScheduleScreen(
                 Divider(Modifier.padding(vertical = 16.dp))
             }
 
-            // --- Schedule Times ---
+
             item {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -131,7 +128,6 @@ fun SetupMedicationScheduleScreen(
                 )
             }
 
-            // --- Additional Info ---
             item {
                 Divider(Modifier.padding(vertical = 16.dp))
                 Text("Additional Info (Optional)", style = MaterialTheme.typography.titleLarge)

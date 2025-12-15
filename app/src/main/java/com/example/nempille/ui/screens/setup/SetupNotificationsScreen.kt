@@ -36,14 +36,14 @@ fun SetupNotificationsScreen(
         Text("Notifications & Alerts", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(32.dp))
 
-        // This is a placeholder for future alert settings
-        Text("Alert settings (like choosing a sound or vibration pattern) can be configured later in the main app settings.",
+
+        Text("Alert settings can be configured later in the main app settings.",
             style = MaterialTheme.typography.bodyLarge
         )
 
         Divider(Modifier.padding(vertical = 32.dp))
 
-        // Caregiver notification section
+        // Caregiver notification section whether he wants to notify caregiver or not
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -74,7 +74,7 @@ fun SetupNotificationsScreen(
             )
         }
 
-        Spacer(Modifier.weight(1f)) // Pushes the button to the bottom
+        Spacer(Modifier.weight(1f))
 
         Button(
             onClick = {

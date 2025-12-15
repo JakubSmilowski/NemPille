@@ -22,7 +22,6 @@ fun SetupProfileScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Local state to hold text field values to avoid recomposing on every key press
     var name by remember { mutableStateOf(uiState.name) }
     var email by remember { mutableStateOf(uiState.email) }
 
@@ -61,12 +60,10 @@ fun SetupProfileScreen(
 
         Button(
             onClick = {
-                // Update the ViewModel with the final values and navigate
                 viewModel.onProfileInfoChanged(name, email)
                 navController.navigate(Screen.SetupAgeAndPillCount.route)
             },
             modifier = Modifier.fillMaxWidth(),
-            // Enable the button only when both fields are not blank
             enabled = name.isNotBlank() && email.isNotBlank()
         ) {
             Text("Next")

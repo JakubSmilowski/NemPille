@@ -28,16 +28,14 @@ fun SetupMedicationNamesScreen(
         Text("What are your medications?", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(24.dp))
 
-        // This LazyColumn now directly uses the list from the ViewModel's state
+
         LazyColumn(modifier = Modifier.weight(1f)) {
             itemsIndexed(
                 items = uiState.medications,
-                // Add a key for performance and stability
                 key = { index, _ -> index }
             ) { index, medication ->
                 OutlinedTextField(
                     value = medication.name,
-                    // When the text changes, call the ViewModel function directly
                     onValueChange = { newName ->
                         viewModel.onMedicationNameChanged(index, newName)
                     },
@@ -54,12 +52,9 @@ fun SetupMedicationNamesScreen(
 
         Button(
             onClick = {
-                // No need to update the ViewModel here, it's already up-to-date!
-                // Just navigate to the schedule screen for the FIRST medication.
                 navController.navigate(Screen.SetupMedicationSchedule.createRoute(0))
             },
             modifier = Modifier.fillMaxWidth(),
-            // The button is enabled only when all medication names have been entered.
             enabled = uiState.medications.all { it.name.isNotBlank() }
         ) {
             Text("Next: Set Up First Medication")
