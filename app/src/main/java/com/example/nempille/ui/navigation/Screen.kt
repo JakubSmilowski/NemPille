@@ -21,6 +21,9 @@ sealed class Screen (val route: String){
     //Home screen (after login)
     data object Home : Screen("home")
 
+    //Medication History
+    data object History : Screen("history")
+
     //Medications for the current user
     data object MedicationList : Screen("medication_list")
 

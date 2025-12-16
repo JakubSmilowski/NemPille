@@ -83,7 +83,8 @@ object NotificationHelper {
         notificationId: Int,
         medicationName: String,
         dosage: String? = null,
-        note: String
+        note: String,
+        motor: Int
     ) {
         showMedicationReminder(context, notificationId, medicationName, dosage)
         CoroutineScope(Dispatchers.IO).launch {
@@ -91,7 +92,7 @@ object NotificationHelper {
                 RetrofitInstance.api.notifyDevice(
                     med = medicationName,
                     note = note,
-                    motor = 0
+                    motor = motor
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
