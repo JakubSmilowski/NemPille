@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.nempille.ui.screens.notifications.NotificationHelper
 
 /**
  * Simple screen for now that lets you send a test notification
@@ -46,11 +45,12 @@ fun NotificationsScreen(
             Button(
                 onClick = {
                     // Directly show a notification without AlarmManager.
-                    NotificationHelper.showMedicationReminder(
+                    NotificationHelper.showTestMedicationReminder(
                         context = context,
                         notificationId = 999,  // any integer ID
-                        medicationName = "Test pill",
-                        dosage = "Just testing!"
+                        medicationName = "Ibuprofen",
+                        dosage = "Just testing!",
+                        note = "Take_with_food"
                     )
                 }
             ) {

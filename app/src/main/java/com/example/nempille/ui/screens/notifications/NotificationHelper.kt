@@ -7,6 +7,10 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.nempille.R
+import com.example.nempille.data.RetrofitInstance
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 //Helper object to handle notification channel creation and
 //building/showing medication reminder notifications.
@@ -71,6 +75,27 @@ object NotificationHelper {
 
         with(NotificationManagerCompat.from(context)) {
             notify(notificationId, builder.build())
+        }
+    }
+
+    fun showTestMedicationReminder(
+        context: Context,
+        notificationId: Int,
+        medicationName: String,
+        dosage: String? = null,
+        note: String
+    ) {
+        showMedicationReminder(context, notificationId, medicationName, dosage)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                RetrofitInstance.api.notifyDevice(
+                    med = medicationName,
+                    note = note,
+                    motor = 0
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }
