@@ -16,6 +16,7 @@ import com.example.nempille.ui.splash.SplashScreen
 import com.example.nempille.ui.screens.medication.AddMedicationScreen
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.nempille.ui.screens.history.HistoryScreen
 import com.example.nempille.ui.screens.medication.EditMedicationScreen
 import com.example.nempille.ui.screens.patient.PatientMedicationListScreen
 import com.example.nempille.ui.screens.patient.AddPatientScreen
@@ -50,6 +51,11 @@ fun AppNavHost(
         //HOME
         composable(route = Screen.Home.route) {
             HomeScreen(navController = navController)
+        }
+
+        //HISTORY
+        composable(route = Screen.History.route) {
+            HistoryScreen(navController = navController)
         }
 
         //MEDICATION LIST

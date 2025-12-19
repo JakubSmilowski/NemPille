@@ -84,4 +84,9 @@ dependencies {
     //for isLoggedIn  = true , userRole = "patient"
     implementation (libs.androidx.datastore.preferences)
     implementation(libs.androidx.compose.material.iconsExtended)
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi.kotlin)
+    implementation(libs.logging.interceptor)
 }
