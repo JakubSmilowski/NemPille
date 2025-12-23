@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
+import org.mindrot.jbcrypt.BCrypt
 
 // Concrete implementation of UserRepository.
 // It knows about Room (UserDao, UserEntity) and AuthDataStore
@@ -35,13 +36,25 @@ class UserRepositoryImpl @Inject constructor(
         userDao.getUserById(id)?.toDomain()
 
     override suspend fun updateUser(user: User) {
-        userDao.updateUser(user.toEntity())
-        // We don't need to touch DataStore here, it only stores user_id / role
+        // Option B: preserve existing passwordHash
+        val existing = userDao.getUserById(user.id)
+            ?: return // user not found, nothing to update
+
+        val updated = existing.copy(
+            name = user.name,
+            email = user.email,
+            phoneNumber = user.phone,
+            age = user.age,
+            role = user.role.name
+            // passwordHash stays as-is because we don't change it here
+        )
+
+        userDao.updateUser(updated)
     }
 
     override suspend fun deleteUser(user: User) {
-        userDao.deleteUser(user.toEntity())
-        //later: could also clear session if the logged-in user was deleted
+        val entity = userDao.getUserById(user.id) ?: return
+        userDao.deleteUser(entity)
     }
 
     //observe currently logged in user, using DataStore,Room,mappers
@@ -74,7 +87,8 @@ class UserRepositoryImpl @Inject constructor(
             email = "$name@example.com",    // placeholder (must not be null)
             role = UserRole.PATIENT.name,
             age = null,
-            phoneNumber = null
+            phoneNumber = null,
+            passwordHash = ""
         )
 
         // Insert into DB, get new row id

@@ -20,6 +20,7 @@ import com.example.nempille.ui.common.collectAsStateWithLifecycleSafe
 import com.example.nempille.ui.navigation.Screen
 import androidx.compose.material3.FilterChip
 import com.example.nempille.domain.model.UserRole
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 
 //simple signup screen screen
 //same AuthViewModel
@@ -81,6 +82,26 @@ fun SignupScreen(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Phone
                 ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            //password
+            OutlinedTextField(
+                value = uiState.password,
+                onValueChange = viewModel::onPasswordChanged,
+                label = { Text("Password") },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            //confirmed password
+            OutlinedTextField(
+                value = uiState.confirmPassword,
+                onValueChange = viewModel::onConfirmPasswordChanged,
+                label = { Text("Confirm password") },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth()
             )
 

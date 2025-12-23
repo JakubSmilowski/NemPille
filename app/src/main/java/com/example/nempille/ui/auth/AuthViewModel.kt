@@ -55,6 +55,16 @@ class AuthViewModel @Inject constructor(
         _uiState.update { it.copy(email = newEmail, errorMessage = null) }
     }
 
+    //password
+
+    fun onPasswordChanged(newPassword: String) {
+        _uiState.update { it.copy(password = newPassword, errorMessage = null) }
+    }
+
+    fun onConfirmPasswordChanged(newConfirm: String) {
+        _uiState.update { it.copy(confirmPassword = newConfirm, errorMessage = null) }
+    }
+
     //Called when user types name (for signup)
     fun onNameChanged(newName: String) {
         _uiState.update { it.copy(name = newName, errorMessage = null) }
@@ -77,16 +87,22 @@ class AuthViewModel @Inject constructor(
     // only if login succeeded
     fun login(onSuccess: () -> Unit = {}) {
         val email = _uiState.value.email.trim()
+        val password = _uiState.value.password
 
         if (email.isEmpty()) {
             _uiState.update { it.copy(errorMessage = "Email cannot be empty") }
+            return
+        }
+        if (password.isBlank()) {
+            _uiState.update { it.copy(errorMessage = "Password cannot be empty") }
             return
         }
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-            val result = loginUseCase(email)
+            //updated
+            val result = loginUseCase(email, password)
 
             result
                 .onSuccess {
@@ -123,6 +139,17 @@ class AuthViewModel @Inject constructor(
             return
         }
 
+        //password validation
+        if(state.password.length < 8) {
+            _uiState.update { it.copy(errorMessage = "Password must be at least 8 characters")}
+            return
+        }
+
+        if (state.password != state.confirmPassword) {
+            _uiState.update { it.copy(errorMessage = "Passwords do not match") }
+            return
+        }
+
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
@@ -130,7 +157,8 @@ class AuthViewModel @Inject constructor(
                 name = state.name.trim(),
                 email = state.email.trim(),
                 role = state.role,
-                phone = state.phone.ifBlank { null }
+                phone = state.phone.ifBlank { null },
+                password = state.password //pass the password
             )
 
             result

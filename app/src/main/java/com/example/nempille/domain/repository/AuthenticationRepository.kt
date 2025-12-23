@@ -12,11 +12,12 @@ interface AuthenticationRepository {
         name: String,
         email: String,
         role: UserRole,
-        phone: String? = null
+        phone: String? = null,
+        password: String
     ): Result<User>
 
     //log in existing user
-    suspend fun login(email: String): Result<User>
+    suspend fun login(email: String, password: String): Result<User>
 
     //logout
     suspend fun logout()

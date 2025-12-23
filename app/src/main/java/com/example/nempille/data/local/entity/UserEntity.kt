@@ -26,7 +26,6 @@ data class UserEntity(
     //email
     val email: String,
 
-    //new:salted password hash,no raw passwords
-    val passwordHash: String,
-    val passwordSalt: String
+    // bcrypt hash (includes salt + cost)
+    val passwordHash: String
 )

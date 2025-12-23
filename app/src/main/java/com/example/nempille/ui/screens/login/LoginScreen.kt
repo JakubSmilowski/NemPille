@@ -21,6 +21,8 @@ import com.example.nempille.domain.model.User
 import com.example.nempille.ui.auth.AuthViewModel
 import com.example.nempille.ui.common.collectAsStateWithLifecycleSafe
 import com.example.nempille.ui.navigation.Screen
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 
 //observes AuthViewModel.uiState
 //shows email field, errors, loading
@@ -76,6 +78,16 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Email //show email keyboard
                 ),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            //password input field
+            OutlinedTextField(
+                value = uiState.password,
+                onValueChange = viewModel::onPasswordChanged,
+                label = { Text("Password") },
+                singleLine = true,
+                visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth()
             )
 
