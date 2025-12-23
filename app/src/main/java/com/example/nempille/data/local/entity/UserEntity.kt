@@ -24,5 +24,9 @@ data class UserEntity(
     val role: String,
 
     //email
-    val email: String
+    val email: String,
+
+    //new:salted password hash,no raw passwords
+    val passwordHash: String,
+    val passwordSalt: String
 )
