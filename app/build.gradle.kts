@@ -89,4 +89,5 @@ dependencies {
     implementation(libs.retrofit.converter.moshi)
     implementation(libs.moshi.kotlin)
     implementation(libs.logging.interceptor)
+    implementation(libs.jbcrypt)
 }
