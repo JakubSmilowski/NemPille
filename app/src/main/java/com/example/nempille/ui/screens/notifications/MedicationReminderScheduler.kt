@@ -10,7 +10,13 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Helper class that uses AlarmManager to schedule/cancel medication reminders.
+ * CONCEPT: AlarmManager & Scheduling
+ * 
+ * How it works:
+ * This class uses AlarmManager, the system service for scheduling 
+ * time-based tasks. It creates a PendingIntent that targets the 
+ * MedicationReminderReceiver and schedules it to run at a specific time, 
+ * even if the app is in the background or the phone is in Doze mode.
  */
 @Singleton
 class MedicationReminderScheduler @Inject constructor(
@@ -39,8 +45,6 @@ class MedicationReminderScheduler @Inject constructor(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Calculate the first trigger time: today at [hour:minute],
-        // or tomorrow if that time has already passed.
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, hour)
@@ -48,29 +52,26 @@ class MedicationReminderScheduler @Inject constructor(
             set(Calendar.SECOND, 0)
             set(Calendar.MILLISECOND, 0)
 
-            //if chosen time is before 'now', schedule next day
             if (before(Calendar.getInstance())) {
                 add(Calendar.DAY_OF_YEAR, 1)
             }
         }
 
-        //repeating alarm every dy at that time
+        /**
+         * CONCEPT: AlarmManager - setRepeating
+         * 
+         * How it works:
+         * This schedules a repeating alarm. 
+         * - RTC_WAKEUP: Wakes the device if it's asleep.
+         * - calendar.timeInMillis: The first trigger time.
+         * - AlarmManager.INTERVAL_DAY: Repeats the alarm every 24 hours.
+         */
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
-
-        /*
-        // DEBUG: fire in 10 seconds instead of using time:
-        val triggerAt = System.currentTimeMillis() + 10_000L
-        alarmManager.setExact(
-            AlarmManager.RTC_WAKEUP,
-            triggerAt,
-            pendingIntent
-        )
-        */
     }
 
     fun cancelReminder(requestId: Int) {

@@ -5,14 +5,16 @@ import android.content.Context
 import android.content.Intent
 import com.example.nempille.ui.screens.notifications.NotificationHelper
 
-//BroadcastReceiver triggered by AlarmManager to show medication reminder
-
-//when AlarmManager triggers,Android sends an Intent to MedicationReminderReceiver
-//this receiver reads the data from the Intent and calls NotificationHelper
-
-//receiver is the 'bridge' between time-based alarms and UI visible notifications
-//decoupled from UI, works even if the app is in background
-
+/**
+ * CONCEPT: BroadcastReceiver
+ * 
+ * How it works:
+ * This class listens for system-wide broadcasts. When the AlarmManager 
+ * triggers an alarm, it sends an Intent that this receiver is 
+ * registered to handle (see AndroidManifest.xml). The `onReceive` 
+ * method is then executed, which in turn calls the NotificationHelper 
+ * to display the reminder.
+ */
 class MedicationReminderReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {

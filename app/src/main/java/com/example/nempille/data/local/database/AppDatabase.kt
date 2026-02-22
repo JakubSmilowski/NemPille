@@ -1,5 +1,5 @@
 package com.example.nempille.data.local.database
-//main database class
+
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.nempille.data.local.dao.MedicationDao
@@ -9,26 +9,26 @@ import com.example.nempille.data.local.entity.MedicationEntity
 import com.example.nempille.data.local.entity.UserEntity
 import com.example.nempille.data.local.entity.PatientCaregiverRelation
 
-// Version = database schema version. CHANGE it when structure changes
-// exportSchema = false disables saving schema files
+/**
+ * CONCEPT: Room Database
+ * 
+ * How it works:
+ * This class serves as the main access point to the persisted data. 
+ * - @Database: Defines the list of @Entity classes and the version.
+ * - RoomDatabase: The base class provided by Room.
+ * - Abstract DAO methods: Room generates the implementation for these.
+ */
 @Database(
     entities = [
         MedicationEntity::class,
         UserEntity::class,
         PatientCaregiverRelation::class],
-    version = 6, //change each time
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
-    // Provide access to DAOs
-
-    //DAO medication
     abstract fun medicationDao(): MedicationDao
-
-    //DAO user
     abstract fun userDao(): UserDao
-
-    //dao patient_caregiver
     abstract fun patientCaregiverDao(): PatientCaregiverDao
 }

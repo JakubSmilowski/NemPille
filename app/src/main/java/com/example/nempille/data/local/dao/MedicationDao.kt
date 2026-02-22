@@ -1,39 +1,47 @@
 package com.example.nempille.data.local.dao
 
-//DAO - data access object
-//contains SQL queries that Room check at compile-time
-
 import androidx.room.*
 import com.example.nempille.data.local.entity.MedicationEntity
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * CONCEPT: Data Access Object (DAO)
+ * 
+ * How it works:
+ * DAOs are the main component of Room that are responsible for 
+ * defining the methods that access the database.
+ */
 @Dao
-interface MedicationDao{
-    //returns ALL medications for one user-patient
-    //flow lets UI automatically update when data changes
+interface MedicationDao {
+
+    /**
+     * CONCEPT: Room with Flow (Reactive UI)
+     * 
+     * How it works:
+     * By returning a Flow, Room will automatically emit a new 
+     * list of medications whenever the 'medications' table 
+     * changes. This allows the UI to update in real-time.
+     */
     @Query("SELECT * FROM medications WHERE userId = :userId ORDER BY id ASC")
     fun getMedicationsForUser(userId: Int): Flow<List<MedicationEntity>>
 
-    //insert new medication
+    @Query("SELECT * FROM medications WHERE id = :id")
+    suspend fun getMedicationById(id: Int): MedicationEntity?
+
+    /**
+     * CONCEPT: Coroutines (suspend functions)
+     * 
+     * How it works:
+     * 'suspend' ensures this database operation is performed on 
+     * a background thread, preventing the main UI thread from 
+     * freezing during a write operation.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMedication(medication: MedicationEntity)
 
-    //update existing medication
     @Update
     suspend fun updateMedication(medication: MedicationEntity)
 
-    //Delete
     @Delete
     suspend fun deleteMedication(medication: MedicationEntity)
-
-    //Get ALL medications
-    @Query("SELECT * FROM medications")
-    fun getAllMedications(): Flow<List<MedicationEntity>>
-
-    //GET MEDICATION BY ID
-    @Query("SELECT * FROM medications WHERE id = :id LIMIT 1")
-    suspend fun getMedicationById(id: Int): MedicationEntity?
-
 }
-
-//room+flow - automatic UI updates
